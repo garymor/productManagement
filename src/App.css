@@ -97,3 +97,10 @@
     border-radius: 0;
     border-bottom: 1px solid #38BB6C;
     }
+
+    .searchInput{
+        margin-left: 26vh;
+        width: 50%;
+         margin-top: 3vh;
+        
+    }

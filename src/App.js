@@ -30,17 +30,25 @@ class Button extends Component {
  }
 }
 
+function isSearched(searchTerm) {
+  return function (item) {
+  return item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
+  }
+  }
+
   class ProductList extends Component{
   constructor(props){
     super(props);
 
     this.state = {
       products:[],
-      loading:true
+      loading:true,
+      searchTerm:''
     }
   
   this.handleRemove = this.handleRemove.bind(this);
   this.handleAdd = this.handleAdd.bind(this);
+  this.onSearchChange = this.onSearchChange.bind(this);
   
   }
 
@@ -70,9 +78,14 @@ class Button extends Component {
     this.setState({products:updatedProducts});
   }
 
+  onSearchChange(event) {
+    this.setState({ searchTerm: event.target.value });
+    }
+
   render() {
     const {products,loading }= this.state;
-    const productsComponent = products.map(({id ,name,description,productImageUrl,editmode}) => (
+    const productsComponent = products.filter(isSearched(this.state.searchTerm)).map(({id ,name,description,productImageUrl,editmode}) => (
+    //const productsComponent = products.map(({id ,name,description,productImageUrl,editmode}) => (
       <>
       <Product 
       id={id}
@@ -80,6 +93,7 @@ class Button extends Component {
       description={description}
       productImageUrl={productImageUrl}
       editmode={editmode}
+      key={id}
       />
       <Button onClick={() => this.handleRemove(id)}>
         Dismiss
@@ -89,12 +103,15 @@ class Button extends Component {
     if (loading) return <div className="load-message" >l  o  a  d  i  n  g . . . . . . . . . .  .</div>
     return(
       <>
+     
+        <input className="searchInput" placeholder="F I L T E R == >" onChange={this.onSearchChange}/>
+      
       <div>
       <Button className='_add' onClick={() => this.handleAdd()}>
         Add
       </Button>
       </div>
-      <div class="grid-container ">
+      <div className="grid-container ">
         <div className='table grid-item'>
           {productsComponent}
         </div>
@@ -111,7 +128,7 @@ class Product extends Component {
   render() {
     
     return(
-      <div className={ "table-row " +this.props.editmode}>
+      <div className={ "table-row " +this.props.editmode} key={this.props.id} >
         <div className='img-div'>
           <img  style={{width: '10vh'}} src={this.props.productImageUrl}  />
         </div>
