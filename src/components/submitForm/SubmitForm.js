@@ -37,7 +37,7 @@ class SubmitForm extends React.Component {
         id:this.generateRandom(),
         name: '',
         description:'',
-        productImageUrl: './matthew.png',
+        productImageUrl: './products/matthew.png',
         editmode:"unedit",
         price:0
         });
